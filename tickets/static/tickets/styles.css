@@ -1,0 +1,157 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+header {
+    background-color: #4caf50;
+    color: white;
+    padding: 15px 20px;
+}
+
+.navbar .logo a {
+    color: black;
+    text-decoration: none;
+    font-size: 24px;
+}
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    background-color: #4caf50;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-container p {
+    margin: 0;
+}
+
+.main-content {
+    margin-bottom: 60px; /* Make space for the footer */
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+/* Seat map styles */
+.seat-map {
+    display: grid;
+    grid-template-columns: repeat(13, 50px);
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.seat {
+    width: 50px;
+    height: 50px;
+    background-color: #ddd;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.seat:hover {
+    background-color: #cfcfcf;
+}
+
+.seat.selected {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.seat.unavailable {
+    background-color: #f44336;
+    color: white;
+    cursor: not-allowed;
+}
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.event-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.event-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.event-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.event-item a {
+    font-size: 20px;
+    font-weight: bold;
+    color: #4caf50;
+    text-decoration: none;
+}
+
+.event-item a:hover {
+    text-decoration: underline;
+}
+
+.event-details {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.tickets-remaining {
+    font-weight: bold;
+    color: #d32f2f;
+    font-size: 16px;
+}

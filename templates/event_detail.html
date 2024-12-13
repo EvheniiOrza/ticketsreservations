@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ event.name }}{% endblock %}
+
+{% block content %}
+<h2>{{ event.name }}</h2>
+<p>Дата: {{ event.date }}</p>
+<p>Ціна квитка: {{ event.price_per_ticket }} грн</p>
+
+<!-- Карта місць -->
+<div class="seat-map" id="seatMap">
+    <div class="row">
+        {% for seat in seats_range_row1 %}
+        <div class="seat {% if seat in booked_seats %}unavailable{% endif %}" data-seat="{{ seat }}">
+            {{ seat }}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        {% for seat in seats_range_row2 %}
+        <div class="seat {% if seat in booked_seats %}unavailable{% endif %}" data-seat="{{ seat }}">
+            {{ seat }}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Модальне вікно для введення побажань -->
+<div class="overlay" id="overlay"></div>
+<div class="modal" id="preferencesModal">
+    <h3>Побажання для місця <span id="seatNumber"></span></h3>
+    <form id="preferencesForm">
+        <label>Їжа:</label>
+        <select name="food" id="food">
+            <option value="yes">Так</option>
+            <option value="no">Ні</option>
+        </select><br>
+        <label>Напої:</label>
+        <select name="drink" id="drink">
+            <option value="water">Вода</option>
+            <option value="alcohol">Міцні напої</option>
+            <option value="none">Без напоїв</option>
+        </select><br>
+        <button type="button" class="btn" id="savePreferences">Зберегти</button>
+        <button type="button" class="btn cancel" id="cancelPreferences">Скасувати</button>
+    </form>
+</div>
+
+<!-- Форма для бронювання -->
+<form method="post" id="bookingForm">
+    {% csrf_token %}
+    <input type="hidden" name="selected_seats" id="selectedSeats">
+    <button type="submit" class="btn">Підтвердити бронювання</button>
+</form>
+
+<script>
+    const seatMap = document.getElementById('seatMap');
+    const selectedSeatsInput = document.getElementById('selectedSeats');
+    const overlay = document.getElementById('overlay');
+    const modal = document.getElementById('preferencesModal');
+    const seatNumberSpan = document.getElementById('seatNumber');
+    const preferencesForm = document.getElementById('preferencesForm');
+
+    let selectedSeats = [];
+
+    // Обробник кліків на місця
+    seatMap.addEventListener('click', (e) => {
+        const seat = e.target;
+        if (seat.classList.contains('seat') && !seat.classList.contains('unavailable')) {
+            const seatNumber = seat.dataset.seat;
+            if (seat.classList.contains('selected')) {
+                // Видалення місця зі списку обраних
+                seat.classList.remove('selected');
+                selectedSeats = selectedSeats.filter(s => s.seat !== seatNumber);
+            } else {
+                // Додавання місця до списку обраних
+                seat.classList.add('selected');
+                seatNumberSpan.textContent = seatNumber;
+                overlay.classList.add('active');
+                modal.classList.add('active');
+            }
+        }
+    });
+
+    // Збереження побажань
+    document.getElementById('savePreferences').addEventListener('click', () => {
+        const seatNumber = seatNumberSpan.textContent;
+        const food = preferencesForm.food.value;
+        const drink = preferencesForm.drink.value;
+
+        selectedSeats.push({ seat: parseInt(seatNumber), preferences: { food, drink } });
+        selectedSeatsInput.value = JSON.stringify(selectedSeats);
+
+        // Закриття модального вікна
+        overlay.classList.remove('active');
+        modal.classList.remove('active');
+    });
+
+    // Скасування побажань
+    document.getElementById('cancelPreferences').addEventListener('click', () => {
+        overlay.classList.remove('active');
+        modal.classList.remove('active');
+    });
+</script>
+
+<style>
+    .seat-map {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .row {
+        display: flex;
+        gap: 5px;
+    }
+    .seat {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #ccc;
+        cursor: pointer;
+    }
+
+    .seat.selected {
+        background-color: #5cb85c;
+        color: #fff;
+    }
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+    }
+    .overlay.active {
+        display: block;
+    }
+    .modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        display: none;
+        z-index: 1000;
+    }
+    .modal.active {
+        display: block;
+    }
+</style>
+{% endblock %}

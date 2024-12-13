@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Список подій{% endblock %}
+
+{% block content %}
+<h2>Список подій</h2>
+
+<ul class="event-list">
+    {% for event in events %}
+    <li class="event-item">
+        <div class="event-info">
+            <a href="{% url 'event_detail' event.id %}">{{ event.name }}</a>
+            <p class="event-details">Дата: {{ event.date }} | Ціна: {{ event.price_per_ticket }} грн</p>
+        </div>
+        <div class="tickets-remaining">
+            Залишилось квитків: {{ event.total_tickets }}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
